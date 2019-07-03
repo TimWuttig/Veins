@@ -1,0 +1,1 @@
+-g -Wall -MMD -MP -MF .d  -fPIC  -Wno-deprecated-register -Wno-unused-function -fno-stack-protector -DHAVE_SWAPCONTEXT -DWITH_MPI -DXMLPARSER=libxml -DWITH_TKENV -DWITH_PARSIM -DWITH_NETBUILDER   -I. -I. -I/media/guetlein/Data/bin/omnetpp-5.4.1/include
