@@ -34,7 +34,18 @@ void SimpleWaveApp::initialize(int stage) {
 
 //function will be called when beacon packet has been received
 void SimpleWaveApp::onBSM(DemoSafetyMessage* bsm) {
-    //todo nachbarschaftsliste aufbauen und auf anfragen antworten
+    if(bsm->getRecipientAddress() == getId()){
+        if(bsm->getSenderID() != getId()){
+            //delay aufzeichnen
+        }else {
+            //send eines Beacons an alle Nachbarn
+        }
+    }else {
+        if(bsm->getRecipientAddress() == -1){
+            //delay berechnen und antworten
+
+        }
+    }
     std::cerr << "Received Beacon" << std::endl;
 }
 
