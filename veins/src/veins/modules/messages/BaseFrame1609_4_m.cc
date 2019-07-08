@@ -188,6 +188,7 @@ BaseFrame1609_4::BaseFrame1609_4(const char *name, short kind) : ::omnetpp::cPac
     this->recipientAddress = -1;
     this->senderID = 0;
     this->timestamp = 0;
+    this->delay = 0;
 }
 
 BaseFrame1609_4::BaseFrame1609_4(const BaseFrame1609_4& other) : ::omnetpp::cPacket(other)
@@ -215,6 +216,7 @@ void BaseFrame1609_4::copy(const BaseFrame1609_4& other)
     this->recipientAddress = other.recipientAddress;
     this->senderID = other.senderID;
     this->timestamp = other.timestamp;
+    this->delay = other.delay;
     this->payload = other.payload;
 }
 
@@ -227,6 +229,7 @@ void BaseFrame1609_4::parsimPack(omnetpp::cCommBuffer *b) const
     doParsimPacking(b,this->recipientAddress);
     doParsimPacking(b,this->senderID);
     doParsimPacking(b,this->timestamp);
+    doParsimPacking(b,this->delay);
     doParsimPacking(b,this->payload);
 }
 
@@ -239,6 +242,7 @@ void BaseFrame1609_4::parsimUnpack(omnetpp::cCommBuffer *b)
     doParsimUnpacking(b,this->recipientAddress);
     doParsimUnpacking(b,this->senderID);
     doParsimUnpacking(b,this->timestamp);
+    doParsimUnpacking(b,this->delay);
     doParsimUnpacking(b,this->payload);
 }
 
@@ -300,6 +304,16 @@ void BaseFrame1609_4::setSenderID(int senderID)
 void BaseFrame1609_4::setTimestamp(::omnetpp::simtime_t timestamp)
 {
     this->timestamp = timestamp;
+}
+
+::omnetpp::simtime_t BaseFrame1609_4::getDelay() const
+{
+    return this->delay;
+}
+
+void BaseFrame1609_4::setDelay(::omnetpp::simtime_t delay)
+{
+    this->delay = delay;
 }
 
 const char * BaseFrame1609_4::getPayload() const
@@ -377,7 +391,7 @@ const char *BaseFrame1609_4Descriptor::getProperty(const char *propertyname) con
 int BaseFrame1609_4Descriptor::getFieldCount() const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 7+basedesc->getFieldCount() : 7;
+    return basedesc ? 8+basedesc->getFieldCount() : 8;
 }
 
 unsigned int BaseFrame1609_4Descriptor::getFieldTypeFlags(int field) const
@@ -396,8 +410,9 @@ unsigned int BaseFrame1609_4Descriptor::getFieldTypeFlags(int field) const
         FD_ISEDITABLE,
         FD_ISEDITABLE,
         FD_ISEDITABLE,
+        FD_ISEDITABLE,
     };
-    return (field>=0 && field<7) ? fieldTypeFlags[field] : 0;
+    return (field>=0 && field<8) ? fieldTypeFlags[field] : 0;
 }
 
 const char *BaseFrame1609_4Descriptor::getFieldName(int field) const
@@ -415,9 +430,10 @@ const char *BaseFrame1609_4Descriptor::getFieldName(int field) const
         "recipientAddress",
         "senderID",
         "timestamp",
+        "delay",
         "payload",
     };
-    return (field>=0 && field<7) ? fieldNames[field] : nullptr;
+    return (field>=0 && field<8) ? fieldNames[field] : nullptr;
 }
 
 int BaseFrame1609_4Descriptor::findField(const char *fieldName) const
@@ -430,7 +446,8 @@ int BaseFrame1609_4Descriptor::findField(const char *fieldName) const
     if (fieldName[0]=='r' && strcmp(fieldName, "recipientAddress")==0) return base+3;
     if (fieldName[0]=='s' && strcmp(fieldName, "senderID")==0) return base+4;
     if (fieldName[0]=='t' && strcmp(fieldName, "timestamp")==0) return base+5;
-    if (fieldName[0]=='p' && strcmp(fieldName, "payload")==0) return base+6;
+    if (fieldName[0]=='d' && strcmp(fieldName, "delay")==0) return base+6;
+    if (fieldName[0]=='p' && strcmp(fieldName, "payload")==0) return base+7;
     return basedesc ? basedesc->findField(fieldName) : -1;
 }
 
@@ -449,9 +466,10 @@ const char *BaseFrame1609_4Descriptor::getFieldTypeString(int field) const
         "LAddress::L2Type",
         "int",
         "simtime_t",
+        "simtime_t",
         "string",
     };
-    return (field>=0 && field<7) ? fieldTypeStrings[field] : nullptr;
+    return (field>=0 && field<8) ? fieldTypeStrings[field] : nullptr;
 }
 
 const char **BaseFrame1609_4Descriptor::getFieldPropertyNames(int field) const
@@ -524,7 +542,8 @@ std::string BaseFrame1609_4Descriptor::getFieldValueAsString(void *object, int f
         case 3: {std::stringstream out; out << pp->getRecipientAddress(); return out.str();}
         case 4: return long2string(pp->getSenderID());
         case 5: return simtime2string(pp->getTimestamp());
-        case 6: return oppstring2string(pp->getPayload());
+        case 6: return simtime2string(pp->getDelay());
+        case 7: return oppstring2string(pp->getPayload());
         default: return "";
     }
 }
@@ -544,7 +563,8 @@ bool BaseFrame1609_4Descriptor::setFieldValueAsString(void *object, int field, i
         case 2: pp->setPsid(string2long(value)); return true;
         case 4: pp->setSenderID(string2long(value)); return true;
         case 5: pp->setTimestamp(string2simtime(value)); return true;
-        case 6: pp->setPayload((value)); return true;
+        case 6: pp->setDelay(string2simtime(value)); return true;
+        case 7: pp->setPayload((value)); return true;
         default: return false;
     }
 }

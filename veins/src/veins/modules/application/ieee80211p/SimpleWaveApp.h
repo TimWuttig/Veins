@@ -38,6 +38,12 @@ class SimpleWaveApp : public BaseWaveApplLayer {
     protected:
 		LinearMobility* mobi;
 		simtime_t someOffset = 1;
+		struct Neighbour {
+		    simtime_t last_recieve;
+		    Coord position;
+		    Coord speed;
+		};
+		std::map<int, Neighbour> neighbours;
 	protected:
 		virtual void onBSM(DemoSafetyMessage* wsm);
 		virtual void onWSM(BaseFrame1609_4* wsm);
@@ -45,7 +51,9 @@ class SimpleWaveApp : public BaseWaveApplLayer {
         virtual void sendWSM(BaseFrame1609_4* wsm);
         virtual void sendBSM(DemoSafetyMessage* wsm);
 		virtual void handlePositionUpdate(cObject* obj);
-
+	private:
+		cOutVector delayVector;
+		cOutVector neighbourVector;
 };
 
 #endif

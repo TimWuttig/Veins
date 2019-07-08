@@ -39,6 +39,7 @@ namespace Veins {
  * 
  *     int senderID = 0;
  *     simtime_t timestamp = 0;
+ *     simtime_t delay = 0;
  *     string payload;
  * }
  * </pre>
@@ -52,6 +53,7 @@ class BaseFrame1609_4 : public ::omnetpp::cPacket
     LAddress::L2Type recipientAddress;
     int senderID;
     ::omnetpp::simtime_t timestamp;
+    ::omnetpp::simtime_t delay;
     ::omnetpp::opp_string payload;
 
   private:
@@ -84,6 +86,8 @@ class BaseFrame1609_4 : public ::omnetpp::cPacket
     virtual void setSenderID(int senderID);
     virtual ::omnetpp::simtime_t getTimestamp() const;
     virtual void setTimestamp(::omnetpp::simtime_t timestamp);
+    virtual ::omnetpp::simtime_t getDelay() const;
+    virtual void setDelay(::omnetpp::simtime_t delay);
     virtual const char * getPayload() const;
     virtual void setPayload(const char * payload);
 };

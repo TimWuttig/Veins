@@ -38,5 +38,6 @@ packet BaseFrame1609_4 {
     
     int senderID = 0;
 	simtime_t timestamp = 0;
+	simtime_t delay = 0;
     string payload;
 }

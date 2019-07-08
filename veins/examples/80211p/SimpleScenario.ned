@@ -26,7 +26,7 @@ network SimpleScenario
                 playgroundSizeZ = playgroundSizeZ;
                 @display("p=30,0;i=misc/globe");
         }
-        node[5]: Wifi {
+        node[100]: Wifi {
             @display("p=150,140;b=10,10,oval");
         }        
         annotations: AnnotationManager {
